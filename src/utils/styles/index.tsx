@@ -13,7 +13,7 @@ import {
   SidebarItemProps,
 } from './styleTypes';
 export const InputField = styled.input`
-  font-family: 'Inter',serif;
+  font-family: 'Inter';
   outline: none;
   border: none;
   background-color: inherit;
@@ -68,7 +68,7 @@ export const Button = styled.button`
   width: 100%;
   outline: none;
   border: none;
-  font-family: 'Inter',serif;
+  font-family: 'Inter';
   font-size: 16px;
   background-color: #2b09ff;
   color: #fff;

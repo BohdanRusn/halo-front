@@ -5,7 +5,7 @@ export const MessageTextarea = styled.textarea`
   outline: none;
   border: none;
   color: ${({ theme }) => theme.messagePanel.inputContainer.color};
-  font-family: 'Inter',serif;
+  font-family: 'Inter';
   box-sizing: border-box;
   font-size: 18px;
   width: 100%;

@@ -72,7 +72,7 @@ export const getButtonVariantStyle = (variant?: ButtonVariant) => {
 export const Button = styled.button<ButtonProps>`
   outline: none;
   border: none;
-  font-family: 'Inter',serif;
+  font-family: 'Inter';
   border-radius: 10px;
   font-weight: 500;
   transition: 250ms background-color ease;

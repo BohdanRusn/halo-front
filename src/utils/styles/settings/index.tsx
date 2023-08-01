@@ -171,7 +171,7 @@ export const ProfileDescriptionField = styled.textarea`
   outline: none;
   border: none;
   color: #ffffff;
-  font-family: 'Inter',serif;
+  font-family: 'Inter';
   box-sizing: border-box;
   font-size: 15px;
   font-weight: 500;
