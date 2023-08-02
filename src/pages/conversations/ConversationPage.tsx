@@ -10,7 +10,6 @@ import {
   updateConversation,
 } from '../../store/conversationSlice';
 import { addMessage, deleteMessage } from '../../store/messages/messageSlice';
-import { updateType } from '../../store/selectedSlice';
 import { SocketContext } from '../../utils/context/SocketContext';
 import { Conversation, MessageEventPayload } from '../../utils/types';
 
@@ -29,26 +28,19 @@ export const ConversationPage = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(updateType('private'));
     dispatch(fetchConversationsThunk());
   }, []);
 
   useEffect(() => {
     socket.on('onMessage', (payload: MessageEventPayload) => {
-      console.log('Message Received');
       const { conversation, message } = payload;
-      console.log(conversation, message);
       dispatch(addMessage(payload));
       dispatch(updateConversation(conversation));
     });
     socket.on('onConversation', (payload: Conversation) => {
-      console.log('Received onConversation Event');
-      console.log(payload);
       dispatch(addConversation(payload));
     });
     socket.on('onMessageDelete', (payload) => {
-      console.log('Message Deleted');
-      console.log(payload);
       dispatch(deleteMessage(payload));
     });
     return () => {

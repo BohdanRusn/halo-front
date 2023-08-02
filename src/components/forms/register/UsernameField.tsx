@@ -14,7 +14,6 @@ export const UsernameField: FC<RegisterFormFieldProps> = ({
   register,
   errors,
 }) => {
-  console.log('Username Errors: ', errors.username);
   return (
     <InputContainer>
       <InputContainerHeader>

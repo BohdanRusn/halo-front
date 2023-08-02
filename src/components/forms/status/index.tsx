@@ -24,7 +24,6 @@ export const UpdateUserStatusForm: FC<Props> = ({ setShowModal }) => {
 
   const saveStatus = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Updating Status...');
     updateStatusMessage({ statusMessage })
       .then(() => {
         success('Updated Status!');

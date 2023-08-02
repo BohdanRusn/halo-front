@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../store';
 import { selectConversationById } from '../../store/conversationSlice';
-import { selectGroupById } from '../../store/groupSlice';
 import {
   addSystemMessage,
   clearAllMessages,
@@ -21,7 +20,8 @@ import {
 } from '../../utils/styles';
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
-import {MessagePanelHeader} from "./MessagePanelHeader";
+import MazeGame from "../mazeGame/MazeGame";
+import {MessagePanelConversationHeader} from "./headers/MessagePanelConversationHeader";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -44,13 +44,6 @@ export const MessagePanel: FC<Props> = ({
   const conversation = useSelector((state: RootState) =>
     selectConversationById(state, parseInt(routeId!))
   );
-  const group = useSelector((state: RootState) =>
-    selectGroupById(state, parseInt(routeId!))
-  );
-  const selectedType = useSelector(
-    (state: RootState) => state.selectedConversationType.type
-  );
-
   const recipient = getRecipientFromConversation(conversation, user);
 
   useEffect(() => {
@@ -67,7 +60,7 @@ export const MessagePanel: FC<Props> = ({
     formData.append('id', routeId);
     trimmedContent && formData.append('content', trimmedContent);
     try {
-      await createMessage(routeId, selectedType, formData);
+      await createMessage(routeId, formData);
       setContent('');
       dispatch(clearAllMessages());
     } catch (err) {
@@ -97,7 +90,8 @@ export const MessagePanel: FC<Props> = ({
   return (
     <>
       <MessagePanelStyle>
-        <MessagePanelHeader />
+        <MazeGame/>
+        <MessagePanelConversationHeader />
         <MessagePanelBody>
           <MessageContainer />
         </MessagePanelBody>
@@ -107,11 +101,7 @@ export const MessagePanel: FC<Props> = ({
             setContent={setContent}
             sendMessage={sendMessage}
             sendTypingStatus={sendTypingStatus}
-            placeholderName={
-              selectedType === 'group'
-                ? group?.title || 'Group'
-                : recipient?.firstName || 'user'
-            }
+            placeholderName={ recipient?.firstName || 'user' }
           />
           <MessageTypingStatus>
             {isRecipientTyping ? `${recipient?.firstName} is typing...` : ''}

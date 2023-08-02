@@ -2,10 +2,10 @@ import { formatRelative } from 'date-fns';
 import { FC, useContext } from 'react';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { MessageItemHeaderContainer } from '../../utils/styles';
-import { GroupMessageType, MessageType } from '../../utils/types';
+import { MessageType } from '../../utils/types';
 
 type Props = {
-  message: MessageType | GroupMessageType;
+  message: MessageType;
 };
 
 export const MessageItemHeader: FC<Props> = ({ message }) => {

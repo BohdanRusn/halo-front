@@ -1,21 +1,13 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { AppDispatch, RootState } from '../../store';
-import { GroupMessageType, MessageType } from '../../utils/types';
-import { SelectedMessageContextMenu } from '../context-menus/SelectedMessageContextMenu';
-import { selectConversationMessage } from '../../store/messages/messageSlice';
-import { selectGroupMessage } from '../../store/groupMessageSlice';
-import { selectType } from '../../store/selectedSlice';
-import { MessageItemHeader } from './MessageItemHeader';
-import { MessageItemContainerBody } from './MessageItemContainerBody';
-import { useHandleClick, useKeydown } from '../../utils/hooks';
-import { UserAvatar } from '../users/UserAvatar';
-import {
-  MessageContainerStyle,
-  MessageItemContainer,
-  MessageItemDetails,
-} from '../../utils/styles';
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router-dom';
+import {AppDispatch, RootState} from '../../store';
+import {MessageType} from '../../utils/types';
+import {selectConversationMessage} from '../../store/messages/messageSlice';
+import {MessageItemHeader} from './MessageItemHeader';
+import {MessageItemContainerBody} from './MessageItemContainerBody';
+import {useHandleClick, useKeydown} from '../../utils/hooks';
+import {MessageContainerStyle, MessageItemContainer, MessageItemDetails,} from '../../utils/styles';
 import {
   editMessageContent,
   resetMessageContainer,
@@ -24,7 +16,8 @@ import {
   setSelectedMessage,
   toggleContextMenu,
 } from '../../store/messageContainerSlice';
-import { SystemMessageList } from './system/SystemMessageList';
+import {SystemMessageList} from './system/SystemMessageList';
+import {SelectedMessageContextMenu} from "../contextMenus/SelectedMessageContextMenu";
 
 export const MessageContainer = () => {
   const { id } = useParams();
@@ -32,10 +25,6 @@ export const MessageContainer = () => {
   const conversationMessages = useSelector((state: RootState) =>
     selectConversationMessage(state, parseInt(id!))
   );
-  const groupMessages = useSelector((state: RootState) =>
-    selectGroupMessage(state, parseInt(id!))
-  );
-  const selectedType = useSelector((state: RootState) => selectType(state));
   const { showContextMenu } = useSelector(
     (state: RootState) => state.messageContainer
   );
@@ -54,7 +43,7 @@ export const MessageContainer = () => {
 
   const onContextMenu = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    message: MessageType | GroupMessageType
+    message: MessageType
   ) => {
     e.preventDefault();
     dispatch(toggleContextMenu(true));
@@ -66,57 +55,29 @@ export const MessageContainer = () => {
     dispatch(editMessageContent(e.target.value));
 
   const mapMessages = (
-    message: MessageType | GroupMessageType,
-    index: number,
-    messages: MessageType[] | GroupMessageType[]
+    message: MessageType
   ) => {
-    const currentMessage = messages[index];
-    const nextMessage = messages[index + 1];
-    const showMessageHeader =
-      messages.length === index + 1 ||
-      currentMessage.author.id !== nextMessage.author.id;
     return (
       <MessageItemContainer
         key={message.id}
         onContextMenu={(e) => onContextMenu(e, message)}
       >
-        {showMessageHeader && <UserAvatar user={message.author} />}
-        {showMessageHeader ? (
-          <MessageItemDetails>
-            <MessageItemHeader message={message} />
-            <MessageItemContainerBody
-              message={message}
-              onEditMessageChange={onEditMessageChange}
-              padding="8px 0 0 0"
-            />
-          </MessageItemDetails>
-        ) : (
+        <MessageItemDetails>
+          <MessageItemHeader message={message}/>
           <MessageItemContainerBody
             message={message}
             onEditMessageChange={onEditMessageChange}
-            padding="0 0 0 70px"
+            padding="8px 0 0 0"
           />
-        )}
+        </MessageItemDetails>
       </MessageItemContainer>
     );
   };
 
   return (
-    <MessageContainerStyle
-      onScroll={(e) => {
-        const node = e.target as HTMLDivElement;
-        const scrollTopMax = node.scrollHeight - node.clientHeight;
-        if (-scrollTopMax === node.scrollTop) {
-          console.log('');
-        }
-      }}
-    >
-      <>
-        <SystemMessageList />
-        {selectedType === 'private'
-          ? conversationMessages?.messages.map(mapMessages)
-          : groupMessages?.messages.map(mapMessages)}
-      </>
+    <MessageContainerStyle>
+      <SystemMessageList />
+      {conversationMessages?.messages.map(mapMessages)}
       {showContextMenu && <SelectedMessageContextMenu />}
     </MessageContainerStyle>
   );

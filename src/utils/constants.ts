@@ -1,20 +1,5 @@
-import {
-  ContextMenuItemType,
-  ConversationTypeData,
-  SettingsItemType,
-  UserSidebarItemType,
-} from './types';
+import { UserSidebarItemType } from './types';
 
-export const chatTypes: ConversationTypeData[] = [
-  {
-    type: 'private',
-    label: 'Private',
-  },
-  {
-    type: 'group',
-    label: 'Group',
-  },
-];
 export const friendsNavbarItems = [
   {
     id: 'friends',
@@ -42,25 +27,4 @@ export const userSidebarItems: UserSidebarItemType[] = [
     id: 'friends',
     pathname: '/friends',
   },
-  {
-    id: 'settings',
-    pathname: '/settings',
-  },
 ];
-
-export const settingsItems: SettingsItemType[] = [
-  {
-    id: 'profile',
-    label: 'Profile',
-    pathname: '/settings/profile',
-  },
-  {
-    id: 'security',
-    label: 'Security',
-    pathname: '/settings/security',
-  },
-
-];
-export enum CDN_URL {
-  BASE = 'https://chuachat.ams3.cdn.digitaloceanspaces.com/',
-}

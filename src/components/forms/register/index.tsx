@@ -18,7 +18,6 @@ export const RegisterForm = () => {
 
   const navigate = useNavigate();
   const onSubmit = async (data: CreateUserParams) => {
-    console.log(data);
     try {
       await postRegisterUser(data);
       navigate('/login');

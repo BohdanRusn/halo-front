@@ -25,22 +25,16 @@ export const ConversationChannelPage = () => {
     const conversationId = id!;
     socket.emit('onConversationJoin', { conversationId });
     socket.on('userJoin', () => {
-      console.log('userJoin');
     });
     socket.on('userLeave', () => {
-      console.log('userLeave');
     });
     socket.on('onTypingStart', () => {
-      console.log('onTypingStart: User has started typing...');
       setIsRecipientTyping(true);
     });
     socket.on('onTypingStop', () => {
-      console.log('onTypingStop: User has stopped typing...');
       setIsRecipientTyping(false);
     });
     socket.on('onMessageUpdate', (message) => {
-      console.log('onMessageUpdate received');
-      console.log(message);
       dispatch(editMessage(message));
     });
 
@@ -59,7 +53,6 @@ export const ConversationChannelPage = () => {
       clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          console.log('User stopped typing');
           socket.emit('onTypingStop', { conversationId: id });
           setIsTyping(false);
         }, 2000)

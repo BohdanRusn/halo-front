@@ -23,7 +23,6 @@ export const LoginForm = () => {
   const onSubmit = async (data: UserCredentialsParams) => {
     try {
       await postLoginUser(data);
-      console.log('Success');
       socket.connect();
       console.log(socket.connected);
       navigate('/conversations');

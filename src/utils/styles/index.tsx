@@ -216,13 +216,14 @@ export const TextField = styled.textarea`
 export const MessagePanelStyle = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   height: 100%;
   width: 100%;
   background-color: ${({ theme }) => theme.messagePanel.backgroundColor};
 `;
 
 export const MessagePanelHeaderStyle = styled.header`
-  height: 90px;
+  height: 70px;
   padding: 10px 32px;
   box-sizing: border-box;
   width: 100%;
@@ -241,6 +242,7 @@ export const MessagePanelBody = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
+  max-height: 300px;
   height: calc(100% - 600px);
 `;
 
@@ -528,18 +530,6 @@ export const UserSidebarFooter = styled.footer`
 
 `;
 
-export const ConversationSearchbar = styled.input`
-  background-color: ${({ theme }) => theme.input.backgroundColor};
-  color: ${({ theme }) => theme.input.color};
-  width: 100%;
-  padding: 10px 16px;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  font-family: 'Inter';
-  border-radius: 5px;
-  box-sizing: border-box;
-`;
 export const UserSidebarItemStyle = styled.div<SidebarItemProps>`
   width: 100%;
   display: flex;
@@ -563,71 +553,6 @@ export const IconBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-export const GroupRecipientsSidebarStyle = styled.aside`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 350px;
-  background-color: ${({ theme }) => theme.background.secondary};
-  flex: 0 0 auto;
-`;
-
-export const GroupRecipientsSidebarHeader = styled.div`
-  height: 90px;
-  padding: 10px 32px;
-  box-sizing: border-box;
-  width: 100%;
-  flex-shrink: 0;
-  color: ${({ theme }) => theme.text.primary};
-  border-bottom: 1px solid #49494925;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  & span {
-    font-size: 20px;
-    font-weight: 500;
-  }
-`;
-
-export const GroupRecipientSidebarItemContainer = styled.div`
-  color: ${({ theme }) => theme.text.primary};
-  padding: 30px 0 0 30px;
-  flex: 1 1 auto;
-  overflow-y: auto;
-  min-height: 0;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-type GroupRecipientSidebarItemProps = {
-  online: boolean;
-};
-
-export const GroupRecipientSidebarItem = styled.div<GroupRecipientSidebarItemProps>`
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 500;
-  margin: 10px 0;
-  & .recipientDetails {
-    display: flex;
-    flex-direction: column;
-    color: ${({ theme }) => theme.text.secondary};
-  }
-  & .left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  & .status {
-    font-size: 12px;
-    font-weight: 500;
-    color: #929292;
-  }
-  opacity: ${({ online }) => !online && 0.2};
 `;
 
 export const MessagePanelHeaderIcons = styled.div`
@@ -671,56 +596,4 @@ export const SystemMessageContainer = styled.div`
     padding-left: 28px;
     color: #656565;
   }
-`;
-
-export const Form = styled.form`
-  width: 100%;
-`;
-
-export const AvatarUploadContainer = styled.div<{ url?: string }>`
-  height: 150px;
-  width: 150px;
-  border-radius: 100%;
-  border: 4px solid #afafaf;
-  cursor: pointer;
-  ${({ url }) =>
-    url
-      ? css`
-          transition: 1s background ease;
-          background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-            url('${url}') no-repeat center;
-          opacity: 100%;
-          transition: 300ms opacity ease;
-          background-size: cover;
-          &:hover {
-            opacity: 100%;
-          }
-        `
-      : css`
-          background-color: #404040;
-        `};
-  &::before {
-    background-color: transparent;
-    content: 'Change Avatar';
-    width: 100%;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #f1f1f1;
-    font-size: 15px;
-    font-weight: 500;
-    opacity: 0;
-    transition: 300ms opacity ease;
-  }
-  &:hover:before {
-    opacity: 1;
-  }
-`;
-
-export const GroupAvatarUploadContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
 `;

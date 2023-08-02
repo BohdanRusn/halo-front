@@ -8,7 +8,7 @@ type Props = {
 
 export const FriendRequestDetails: FC<Props> = ({ details }) => (
   <div className="details">
-    <UserAvatar user={details.user} />
+    <UserAvatar />
     <div className="name">
       <span>{details.displayName}</span>
       <span className="status">{details.status}</span>

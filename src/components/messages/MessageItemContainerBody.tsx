@@ -2,11 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { MessageItemContent } from '../../utils/styles';
-import { GroupMessageType, MessageType } from '../../utils/types';
+import { MessageType } from '../../utils/types';
 import { EditMessageContainer } from './EditMessageContainer';
 
 type Props = {
-  message: MessageType | GroupMessageType;
+  message: MessageType;
   onEditMessageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   padding: string;
 };

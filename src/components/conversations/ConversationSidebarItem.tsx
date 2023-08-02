@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CDN_URL } from '../../utils/constants';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { getRecipientFromConversation } from '../../utils/helpers';
 import {
@@ -31,7 +30,6 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
     return null;
   };
 
-  const hasProfilePicture = () => recipient?.profile?.avatar;
 
   return (
     <>
@@ -40,11 +38,7 @@ export const ConversationSidebarItem: React.FC<Props> = ({ conversation }) => {
         selected={parseInt(id!) === conversation.id}
       >
         <img
-          src={
-            hasProfilePicture()
-              ? CDN_URL.BASE.concat(recipient?.profile?.avatar!)
-              : defaultAvatar
-          }
+          src={ defaultAvatar }
           alt="avatar"
           className={styles.conversationAvatar}
         />

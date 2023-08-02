@@ -29,13 +29,12 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   const debouncedQuery = useDebounce(query, 1000);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     if (debouncedQuery) {
       setSearching(true);
       searchUsers(debouncedQuery)
         .then(({ data }) => {
-          console.log(data);
           setUserResults(data);
         })
         .catch((err) => console.log(err))
@@ -51,8 +50,6 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
     )
       .unwrap()
       .then(({ data }) => {
-        console.log(data);
-        console.log('done');
         setShowModal(false);
         navigate(`/conversations/${data.id}`);
       })

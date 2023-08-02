@@ -10,7 +10,6 @@ export function useAuth() {
   useEffect(() => {
     getAuthUser()
       .then(({ data }) => {
-        console.log(data);
         window.localStorage.setItem('user', JSON.stringify(data))
         updateAuthUser(data);
         setTimeout(() => setLoading(false), 1000);

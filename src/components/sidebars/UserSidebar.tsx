@@ -28,11 +28,11 @@ export const UserSidebar = () => {
       {showModal && <UpdatePresenceStatusModal setShowModal={setShowModal} />}
       <UserSidebarStyle>
         <UserSidebarHeader>
-          <UserAvatar user={user!} onClick={() => setShowModal(true)} />
+          <UserAvatar onClick={() => setShowModal(true)} />
         </UserSidebarHeader>
         <UserSidebarScrollableContainer>
           {userSidebarItems.map((item) => (
-            <UserSidebarItem item={item} />
+            <UserSidebarItem key={item.id} item={item} />
           ))}
         </UserSidebarScrollableContainer>
 

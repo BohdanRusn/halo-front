@@ -37,7 +37,6 @@ export const FriendContextMenu = () => {
     recipient &&
       checkConversationOrCreate(recipient.id)
         .then(({ data }) => {
-          console.log(data);
           navigate(`/conversations/${data.id}`);
         })
         .catch((err) => {

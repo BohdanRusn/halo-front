@@ -12,18 +12,12 @@ import { User } from './utils/types';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './store';
 import { enableMapSet } from 'immer';
-import { GroupChannelPage } from './pages/group/GroupChannelPage';
-import { GroupPage } from './pages/group/GroupPage';
 import { AppPage } from './pages/AppPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ConversationPageGuard } from './guards/ConversationPageGuard';
-import { GroupPageGuard } from './guards/GroupPageGuard';
 import { FriendsLayoutPage } from './pages/friends/FriendsLayoutPage';
 import { FriendRequestPage } from './pages/friends/FriendRequestPage';
-import { SettingsPage } from './pages/settings/SettingsPage';
-import { SettingsProfilePage } from './pages/settings/SettingsProfilePage';
-import { SettingsAppearancePage } from './pages/settings/SettingsAppearancePage';
 
 enableMapSet();
 
@@ -65,19 +59,9 @@ function App() {
               }
             />
           </Route>
-          <Route path="groups" element={<GroupPage />}>
-            <Route
-              path=":id"
-              element={<GroupPageGuard children={<GroupChannelPage />} />}
-            />
-          </Route>
           <Route path="friends" element={<FriendsLayoutPage />}>
             <Route path="requests" element={<FriendRequestPage />} />
             <Route path="blocked" element={<div>Blocked</div>} />
-          </Route>
-          <Route path="settings" element={<SettingsPage />}>
-            <Route path="profile" element={<SettingsProfilePage />} />
-            <Route path="appearance" element={<SettingsAppearancePage />} />
           </Route>
         </Route>
       </Routes>

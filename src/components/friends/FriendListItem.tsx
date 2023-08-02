@@ -25,7 +25,7 @@ export const FriendListItem: FC<Props> = ({
       onContextMenu={(e) => onContextMenu(e, friend)}
       online={online}
     >
-      <UserAvatar user={friendUserInstance} />
+      <UserAvatar />
       <div className="friendDetails">
         <span className="username">{friendUserInstance.username}</span>
         {online && (

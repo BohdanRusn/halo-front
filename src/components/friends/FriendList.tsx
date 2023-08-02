@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { AppDispatch, RootState } from '../../store';
 import { FriendListContainer } from '../../utils/styles/friends';
 import { FriendListItem } from './FriendListItem';
-import { FriendContextMenu } from '../context-menus/FriendContextMenu';
+import { FriendContextMenu } from '../contextMenus/FriendContextMenu';
 import { ContextMenuEvent, Friend } from '../../utils/types';
 import {
   setContextMenuLocation,
@@ -16,7 +16,7 @@ export const FriendList = () => {
     (state: RootState) => state.friends
   );
   const dispatch = useDispatch<AppDispatch>();
-
+  
   useEffect(() => {
     const handleClick = () => dispatch(toggleContextMenu(false));
     window.addEventListener('click', handleClick);
@@ -25,7 +25,6 @@ export const FriendList = () => {
 
   const onContextMenu = (e: ContextMenuEvent, friend: Friend) => {
     e.preventDefault();
-    console.log('Friend Context Menu');
     dispatch(toggleContextMenu(true));
     dispatch(setContextMenuLocation({ x: e.pageX, y: e.pageY }));
     dispatch(setSelectedFriend(friend));
