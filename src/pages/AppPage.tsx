@@ -15,7 +15,6 @@ import { BsFillPersonCheckFill } from 'react-icons/bs';
 import { fetchFriendRequestThunk } from '../store/friends/friendsThunk';
 import { ThemeProvider } from 'styled-components';
 import { DarkTheme } from '../utils/themes';
-import Peer from 'peerjs';
 import { AuthContext } from '../utils/context/AuthContext';
 import { useFriendRequestReceived } from '../utils/hooks/sockets/friend-requests/useFriendRequestReceived';
 
@@ -28,22 +27,6 @@ export const AppPage = () => {
   useEffect(() => {
     dispatch(fetchFriendRequestThunk());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!user) return;
-    new Peer(user.peer.id, {
-      config: {
-        iceServers: [
-          {
-            url: 'stun:stun.l.google.com:19302',
-          },
-          {
-            url: 'stun:stun1.l.google.com:19302',
-          },
-        ],
-      },
-    });
-  }, []);
 
   useFriendRequestReceived();
 

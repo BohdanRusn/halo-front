@@ -7,7 +7,7 @@ import {
 } from '../../utils/styles';
 import styles from './index.module.scss';
 import { useDispatch } from 'react-redux';
-import { createConversationThunk } from '../../store/conversationSlice';
+import { createGameThunk } from '../../store/gameSlice';
 import { User } from '../../utils/types';
 import { AppDispatch } from '../../store';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ type Props = {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 };
 
-export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
+export const CreateGameForm: FC<Props> = ({ setShowModal }) => {
   const [query, setQuery] = useState('');
   const [userResults, setUserResults] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User>();
@@ -46,12 +46,12 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
     e.preventDefault();
     if (!message || !selectedUser) return;
     return dispatch(
-      createConversationThunk({ username: selectedUser.username, message })
+      createGameThunk({ username: selectedUser.username, message })
     )
       .unwrap()
       .then(({ data }) => {
         setShowModal(false);
-        navigate(`/conversations/${data.id}`);
+        navigate(`/games/${data.id}`);
       })
       .catch((err) => console.log(err));
   };
@@ -63,7 +63,7 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
   };
 
   return (
-    <form className={styles.createConversationForm} onSubmit={onSubmit}>
+    <form className={styles.createGameForm} onSubmit={onSubmit}>
       <RecipientField
         selectedUser={selectedUser}
         setQuery={setQuery}
@@ -77,14 +77,14 @@ export const CreateConversationForm: FC<Props> = ({ setShowModal }) => {
       )}
       <section className={styles.message}>
         <InputContainer backgroundColor="#161616">
-          <InputLabel>Message (optional)</InputLabel>
+          <InputLabel>Message</InputLabel>
           <TextField
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
         </InputContainer>
       </section>
-      <Button>Create Conversation</Button>
+      <Button>Create Game</Button>
     </form>
   );
 };

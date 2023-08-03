@@ -36,7 +36,7 @@ export const SendFriendRequestForm: FC<Props> = ({ setShowModal }) => {
   };
 
   return (
-    <form className={styles.createConversationForm} onSubmit={onSubmit}>
+    <form className={styles.createGameForm} onSubmit={onSubmit}>
       <InputContainer backgroundColor="#161616">
         <InputLabel>Recipient</InputLabel>
         <InputField

@@ -25,7 +25,7 @@ export const LoginForm = () => {
       await postLoginUser(data);
       socket.connect();
       console.log(socket.connected);
-      navigate('/conversations');
+      navigate('/games');
     } catch (err) {
       console.log(socket.connected);
       console.log(err);

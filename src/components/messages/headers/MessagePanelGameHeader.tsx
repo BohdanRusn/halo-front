@@ -2,23 +2,23 @@ import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../../store';
-import { selectConversationById } from '../../../store/conversationSlice';
+import { selectGameById } from '../../../store/gameSlice';
 import { AuthContext } from '../../../utils/context/AuthContext';
-import { getRecipientFromConversation } from '../../../utils/helpers';
+import { getRecipientFromGame } from '../../../utils/helpers';
 import {
   MessagePanelHeaderIcons,
   MessagePanelHeaderStyle,
 } from '../../../utils/styles';
 
-export const MessagePanelConversationHeader = () => {
+export const MessagePanelGameHeader = () => {
   const user = useContext(AuthContext).user!;
   const { id } = useParams();
 
-  const conversation = useSelector((state: RootState) =>
-    selectConversationById(state, parseInt(id!))
+  const game = useSelector((state: RootState) =>
+    selectGameById(state, parseInt(id!))
   );
 
-  const recipient = getRecipientFromConversation(conversation, user);
+  const recipient = getRecipientFromGame(game, user);
   
   return (
     <MessagePanelHeaderStyle>

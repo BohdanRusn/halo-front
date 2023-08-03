@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   deleteMessage as deleteMessageAPI,
   editMessage as editMessageAPI,
-  getConversationMessages,
+  getGameMessages,
 } from '../../utils/api';
 import {
   DeleteMessageParams,
@@ -12,7 +12,7 @@ import {
 export const fetchMessagesThunk = createAsyncThunk(
   'messages/fetch',
   (id: number) => {
-    return getConversationMessages(id);
+    return getGameMessages(id);
   }
 );
 

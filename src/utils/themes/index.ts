@@ -12,10 +12,10 @@ export type Theme = {
     backgroundColor: string;
     color: string;
   };
-  conversationSidebar: {
+  gameSidebar: {
     backgroundColor: string;
     color: string;
-    conversationItem: {
+    gameItem: {
       selected: string;
       hover: {
         backgroundColor: string;
@@ -69,10 +69,10 @@ export const DarkTheme: Theme = {
     backgroundColor: '#0b0b0b',
     color: '#fff',
   },
-  conversationSidebar: {
+  gameSidebar: {
     backgroundColor: '#111',
     color: '#fff',
-    conversationItem: {
+    gameItem: {
       selected: '#1a1a1a',
       hover: {
         backgroundColor: '#222',
@@ -126,10 +126,10 @@ export const LightTheme: Theme = {
     backgroundColor: '#15161E',
     color: '#fff',
   },
-  conversationSidebar: {
+  gameSidebar: {
     backgroundColor: '#fff',
     color: '#000',
-    conversationItem: {
+    gameItem: {
       selected: '#D1D1D1',
       hover: {
         backgroundColor: '#D8D8D8',
@@ -174,10 +174,10 @@ export const LightTheme: Theme = {
 //     backgroundColor: '#1E1236',
 //     color: '#fff',
 //   },
-//   conversationSidebar: {
+//   gameSidebar: {
 //     backgroundColor: '#443762',
 //     color: '#fff',
-//     conversationItem: {
+//     gameItem: {
 //       selected: '#8973BA',
 //       hover: {
 //         backgroundColor: '#352B4E',

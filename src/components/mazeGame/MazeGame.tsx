@@ -1,5 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {SocketContext} from "../../utils/context/SocketContext";
+import React, {useEffect, useState} from 'react';
+import {Button, GameButtons} from "../../utils/styles";
+import {useGenerateMaze} from "../../utils/hooks/useGenerateMaze";
 
 const cellSize = 30;
 const mazeWidth = 10;
@@ -10,170 +11,85 @@ const player1Color = 'blue';
 const player2Color = 'red';
 const wallColor = 'black';
 
-function getRandomInt(min: number, max: number) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function generateRandomCoordinates(mazeData: number[][], occupiedCoordinates: [{ x: number, y: number }]) {
-	const mazeWidth = mazeData[0].length;
-	const mazeHeight = mazeData.length;
-	
-	let randomX = 0, randomY = 0;
-	do {
-		randomX = getRandomInt(1, mazeWidth - 2); // Exclude the border walls
-		randomY = getRandomInt(1, mazeHeight - 2); // Exclude the border walls
-	} while (mazeData[randomY][randomX] !== 0 || occupiedCoordinates.some(coords => coords.x === randomX && coords.y === randomY));
-	
-	return {x: randomX, y: randomY};
-}
-
-
-const mazeData = [
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
-	[1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 1, 0, 1, 1, 1, 1, 0, 1],
-	[1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-	[1, 0, 1, 0, 1, 1, 1, 1, 1, 1],
-	[1, 0, 1, 0, 0, 0, 0, 1, 1, 1],
-	[1, 0, 0, 0, 1, 1, 0, 0, 0, 2],
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-];
-
 const findWinner = (array: number[][], player1: { x: number, y: number}, player2: { x: number, y: number}) => {
 	const flattenArray = array.flat();
 	const index = flattenArray.indexOf(2);
 	
 	if (index !== -1) {
-		const x = Math.floor(index / array[0].length);
-		const y = index % array[0].length - 1;
-		if ( player1.x === x && player1.y === y ){
-			return 'Second player is WINNER'
+		const exitX = Math.floor(index % array[0].length);
+		const exitY = Math.floor(index / array[0].length);
+		
+		if (player1.x === exitX && Math.abs(player1.y - exitY) <= 1) {
+			return 'First player is WINNER';
 		}
-		if ( player2.x === x && player2.y === y )
-		return 'First player is WINNER';
+		
+		if (player1.y === exitY && Math.abs(player1.x - exitX) <= 1) {
+			return 'First player is WINNER';
+		}
+		
+		if (player2.x === exitX && Math.abs(player2.y - exitY) <= 1) {
+			return 'Second player is WINNER';
+		}
+		
+		if (player2.y === exitY && Math.abs(player2.x - exitX) <= 1) {
+			return 'Second player is WINNER';
+		}
 	}
 	
 	return '';
 }
 
 const MazeGame = () => {
-	const socket = useContext(SocketContext);
-	
-	const [player1Position, setPlayer1Position] = useState(
-		generateRandomCoordinates(mazeData, [{x: 0, y: 0}])
-	);
-	const [player2Position, setPlayer2Position] = useState(
-		generateRandomCoordinates(mazeData, [player1Position])
-	);
-	const [winner, setWinner] = useState('')
+	const { maze, recreateMaze, generateRandomCoords } = useGenerateMaze(mazeWidth, mazeHeight);
+	const [player1Position, setPlayer1Position] = useState({ x: 0, y: 0 });
+	const [player2Position, setPlayer2Position] = useState({ x: 0, y: 0 });
+	const [winner, setWinner] = useState('');
 	const [isPlayer1Disabled, set1Disabled] = useState(false);
 	const [isPlayer2Disabled, set2Disabled] = useState(true);
-	console.log(findWinner(mazeData, player1Position, player2Position), player1Position, player2Position)
-	const handleKeyDown = (e: any) => {
-		e.preventDefault();
-		
-		if (!winner){
-			if (!winner) {
-				socket.emit('player_move', {
-					playerId: isPlayer1Disabled ? 2 : 1,
-					move: e.key,
-				});
-			}
-			const x1 = player1Position.x;
-			const y1 = player1Position.y;
-			
-			const x2 = player2Position.x;
-			const y2 = player2Position.y;
-			
-			if (!isPlayer1Disabled && isPlayer2Disabled) {
-				// Handle player 2 movement
-				console.log(e.key)
-				switch (e.key) {
-					case 'w':
-						if (y2 > 0 && mazeData[y2 - 1][x2] === 0) {
-							setPlayer2Position((prevPos) => ({x: prevPos.x, y: prevPos.y - 1}));
-							set1Disabled(true);
-							set2Disabled(false);
-						}
-						break;
-					case 's':
-						if (y2 < mazeHeight - 1 && mazeData[y2 + 1][x2] === 0) {
-							setPlayer2Position((prevPos) => ({x: prevPos.x, y: prevPos.y + 1}));
-							set1Disabled(true);
-							set2Disabled(false);
-						}
-						break;
-					case 'a':
-						if (x2 > 0 && mazeData[y2][x2 - 1] === 0) {
-							setPlayer2Position((prevPos) => ({x: prevPos.x - 1, y: prevPos.y}));
-							set1Disabled(true);
-							set2Disabled(false);
-						}
-						break;
-					case 'd':
-						if (x2 < mazeWidth - 1 && mazeData[y2][x2 + 1] === 0) {
-							setPlayer2Position((prevPos) => ({x: prevPos.x + 1, y: prevPos.y}));
-							set1Disabled(true);
-							set2Disabled(false);
-						}
-						break;
-					default:
-						break;
-				}
-			} else {
-				// Handle player 1 movement
-				switch (e.key) {
-					case 'ArrowUp':
-						if (y1 > 0 && mazeData[y1 - 1][x1] === 0) {
-							setPlayer1Position((prevPos) => ({x: prevPos.x, y: prevPos.y - 1}));
-							set1Disabled(false);
-							set2Disabled(true);
-						}
-						break;
-					case 'ArrowDown':
-						if (y1 < mazeHeight - 1 && mazeData[y1 + 1][x1] === 0) {
-							setPlayer1Position((prevPos) => ({x: prevPos.x, y: prevPos.y + 1}));
-							set1Disabled(false);
-							set2Disabled(true);
-						}
-						break;
-					case 'ArrowLeft':
-						if (x1 > 0 && mazeData[y1][x1 - 1] === 0) {
-							setPlayer1Position((prevPos) => ({x: prevPos.x - 1, y: prevPos.y}));
-							set1Disabled(false);
-							set2Disabled(true);
-						}
-						break;
-					case 'ArrowRight':
-						if (x1 < mazeWidth - 1 && mazeData[y1][x1 + 1] === 0) {
-							setPlayer1Position((prevPos) => ({x: prevPos.x + 1, y: prevPos.y}));
-							set1Disabled(false);
-							set2Disabled(true);
-						}
-						break;
-					default:
-						break;
-				}
-			}
-		}
-		
-	};
 	
 	useEffect(() => {
-		// Draw the maze and players on the canvas
+		const player1Coords = generateRandomCoords();
+		const player2Coords = generateRandomCoords();
+		
+		setPlayer1Position(player1Coords);
+		setPlayer2Position(player2Coords);
+	}, [generateRandomCoords]);
+	
+	const handleGiveUp = () => {
+		if (!winner) {
+			if (isPlayer1Disabled && !isPlayer2Disabled) {
+				setWinner('Second player is the WINNER');
+			} else if (!isPlayer1Disabled && isPlayer2Disabled) {
+				setWinner('First player is the WINNER');
+			}
+		}
+	};
+	
+	const resetGame = () => {
+		setWinner('');
+		recreateMaze(mazeWidth, mazeHeight);
+		
+		const newPlayer1Position = generateRandomCoords();
+		const newPlayer2Position = generateRandomCoords();
+		
+		setPlayer1Position(newPlayer1Position);
+		setPlayer2Position(newPlayer2Position);
+		
+		set1Disabled(false);
+		set2Disabled(true);
+	};
+	
+	const drawMazeAndPlayers = () => {
 		const canvas: HTMLCanvasElement = document.getElementById('mazeCanvas')! as any;
 		const ctx = canvas.getContext('2d')!;
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
 		// Draw the maze
-		for (let y = 0; y < mazeData.length; y++) {
-			for (let x = 0; x < mazeData[y].length; x++) {
+		for (let y = 0; y < maze.length; y++) {
+			for (let x = 0; x < maze[y].length; x++) {
 				ctx.beginPath();
 				ctx.rect(x * cellSize, y * cellSize, cellSize, cellSize);
-				ctx.fillStyle =
-					mazeData[y][x] === 1 ? wallColor : mazeData[y][x] === 0 ? 'white' : exitColor;
+				ctx.fillStyle = maze[y][x] === 1 ? wallColor : maze[y][x] === 0 ? 'white' : exitColor;
 				ctx.fill();
 				ctx.strokeStyle = 'black';
 				ctx.stroke();
@@ -208,11 +124,97 @@ const MazeGame = () => {
 		ctx.strokeStyle = 'black';
 		ctx.stroke();
 		ctx.closePath();
-		const gameWinner = findWinner(mazeData, player1Position, player2Position);
-		if (gameWinner){
+		
+		const gameWinner = findWinner(maze, player1Position, player2Position);
+		if (gameWinner) {
 			setWinner(gameWinner);
 		}
-	}, [player1Position, player2Position]);
+	};
+	
+	useEffect(drawMazeAndPlayers, [player1Position, player2Position]);
+	
+	const handleKeyDown = (e: any) => {
+		e.preventDefault();
+		
+		if (!winner){
+			const x1 = player1Position.x;
+			const y1 = player1Position.y;
+			
+			const x2 = player2Position.x;
+			const y2 = player2Position.y;
+			
+			if (!isPlayer1Disabled && isPlayer2Disabled) {
+				// Handle player 2 movement
+				switch (e.key) {
+					case 'w':
+						if (y2 > 0 && maze[y2 - 1][x2] === 0) {
+							setPlayer2Position((prevPos) => ({x: prevPos.x, y: prevPos.y - 1}));
+							set1Disabled(true);
+							set2Disabled(false);
+						}
+						break;
+					case 's':
+						if (y2 < mazeHeight - 1 && maze[y2 + 1][x2] === 0) {
+							setPlayer2Position((prevPos) => ({x: prevPos.x, y: prevPos.y + 1}));
+							set1Disabled(true);
+							set2Disabled(false);
+						}
+						break;
+					case 'a':
+						if (x2 > 0 && maze[y2][x2 - 1] === 0) {
+							setPlayer2Position((prevPos) => ({x: prevPos.x - 1, y: prevPos.y}));
+							set1Disabled(true);
+							set2Disabled(false);
+						}
+						break;
+					case 'd':
+						if (x2 < mazeWidth - 1 && maze[y2][x2 + 1] === 0) {
+							setPlayer2Position((prevPos) => ({x: prevPos.x + 1, y: prevPos.y}));
+							set1Disabled(true);
+							set2Disabled(false);
+						}
+						break;
+					default:
+						break;
+				}
+			} else {
+				// Handle player 1 movement
+				switch (e.key) {
+					case 'ArrowUp':
+						if (y1 > 0 && maze[y1 - 1][x1] === 0) {
+							setPlayer1Position((prevPos) => ({x: prevPos.x, y: prevPos.y - 1}));
+							set1Disabled(false);
+							set2Disabled(true);
+						}
+						break;
+					case 'ArrowDown':
+						if (y1 < mazeHeight - 1 && maze[y1 + 1][x1] === 0) {
+							setPlayer1Position((prevPos) => ({x: prevPos.x, y: prevPos.y + 1}));
+							set1Disabled(false);
+							set2Disabled(true);
+						}
+						break;
+					case 'ArrowLeft':
+						if (x1 > 0 && maze[y1][x1 - 1] === 0) {
+							setPlayer1Position((prevPos) => ({x: prevPos.x - 1, y: prevPos.y}));
+							set1Disabled(false);
+							set2Disabled(true);
+						}
+						break;
+					case 'ArrowRight':
+						if (x1 < mazeWidth - 1 && maze[y1][x1 + 1] === 0) {
+							setPlayer1Position((prevPos) => ({x: prevPos.x + 1, y: prevPos.y}));
+							set1Disabled(false);
+							set2Disabled(true);
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		
+	};
 	
 	return (
 		<div tabIndex={0} onKeyDown={handleKeyDown}>
@@ -221,7 +223,11 @@ const MazeGame = () => {
 				id="mazeCanvas"
 				width={mazeWidth * cellSize}
 				height={mazeHeight * cellSize}
-			></canvas>
+			/>
+			<GameButtons>
+				<Button disabled={!!winner} onClick={handleGiveUp}>Give Up</Button>
+				<Button disabled={!winner} onClick={resetGame}>Reset Game</Button>
+			</GameButtons>
 		</div>
 	);
 };

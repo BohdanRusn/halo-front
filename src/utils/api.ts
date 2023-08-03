@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import {
   AcceptFriendRequestResponse,
   CancelFriendRequestResponse,
-  Conversation,
-  CreateConversationParams,
+  Game,
+  CreateGameParams,
   CreateUserParams,
   DeleteMessageParams,
   DeleteMessageResponse,
@@ -30,15 +30,15 @@ export const postLoginUser = (data: UserCredentialsParams) =>
 
 export const getAuthUser = () => axiosClient.get<User>(`/auth/status`, config);
 
-export const getConversations = () =>
-  axiosClient.get<Conversation[]>(`/conversations`, config);
+export const getGames = () =>
+  axiosClient.get<Game[]>(`/games`, config);
 
-export const getConversationById = (id: number) =>
-  axiosClient.get<Conversation>(`/conversations/${id}`, config);
+export const getGameById = (id: number) =>
+  axiosClient.get<Game>(`/games/${id}`, config);
 
-export const getConversationMessages = (conversationId: number) =>
+export const getGameMessages = (gameId: number) =>
   axiosClient.get<FetchMessagePayload>(
-    `/conversations/${conversationId}/messages`,
+    `/games/${gameId}/messages`,
     config
   );
 
@@ -46,25 +46,25 @@ export const createMessage = (
   id: string,
   data: FormData
 ) => {
-  const url = `/conversations/${id}/messages`;
+  const url = `/games/${id}/messages`;
   return axiosClient.post(url, data, {
     headers: { 'Content-Type': 'multipart/form-data' },
     ...config,
   });
 };
 
-export const postNewConversation = (data: CreateConversationParams) =>
-  axiosClient.post<Conversation>(`/conversations`, data, config);
+export const postNewGame = (data: CreateGameParams) =>
+  axiosClient.post<Game>(`/games`, data, config);
 
 export const deleteMessage = ({ id, messageId }: DeleteMessageParams) =>
   axiosClient.delete<DeleteMessageResponse>(
-    `/conversations/${id}/messages/${messageId}`,
+    `/games/${id}/messages/${messageId}`,
     config
   );
 
 export const editMessage = ({ content, id, messageId }: EditMessagePayload) =>
   axiosClient.patch<MessageType>(
-    `/conversations/${id}/messages/${messageId}`,
+    `/games/${id}/messages/${messageId}`,
     { content },
     config
   );
@@ -104,8 +104,8 @@ export const rejectFriendRequest = (id: number) =>
 export const removeFriend = (id: number) =>
   axiosClient.delete<Friend>(`/friends/${id}/delete`, config);
 
-export const checkConversationOrCreate = (recipientId: number) =>
-  axiosClient.get<Conversation>(`/exists/conversations/${recipientId}`, config);
+export const checkGameOrCreate = (recipientId: number) =>
+  axiosClient.get<Game>(`/exists/games/${recipientId}`, config);
 export const checkUsernameExists = (username: string) =>
   axiosClient.get(`/users/check?username=${username}`, config);
 

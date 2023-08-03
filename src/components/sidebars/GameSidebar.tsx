@@ -7,20 +7,19 @@ import {
   SidebarStyle,
   ScrollableContainer,
 } from '../../utils/styles';
-import { ConversationSidebarItem } from '../conversations/ConversationSidebarItem';
-import { ConversationTab } from '../conversations/ConversationTab';
-import { CreateConversationModal } from '../modals/CreateConversationModal'
+import { GameSidebarItem } from '../games/GameSidebarItem';
+import { CreateGameModal } from '../modals/CreateGameModal'
 
-export const ConversationSidebar = () => {
+export const GameSidebar = () => {
   const [showModal, setShowModal] = useState(false);
-  const conversations = useSelector(
-    (state: RootState) => state.conversation.conversations
+  const games = useSelector(
+    (state: RootState) => state.game.games
   );
   
   return (
     <>
       {showModal && (
-        <CreateConversationModal setShowModal={setShowModal} />
+        <CreateGameModal setShowModal={setShowModal} />
       )}
       <SidebarStyle>
         <SidebarHeader>
@@ -28,13 +27,12 @@ export const ConversationSidebar = () => {
             New Game
           </Button>
         </SidebarHeader>
-        <ConversationTab />
         <ScrollableContainer>
           <SidebarContainerStyle>
-            {conversations.map((conversation) => (
-                  <ConversationSidebarItem
-                    key={conversation.id}
-                    conversation={conversation}
+            {games.map((game) => (
+                  <GameSidebarItem
+                    key={game.id}
+                    game={game}
                   />
                 )
               )}

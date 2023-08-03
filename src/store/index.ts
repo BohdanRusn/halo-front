@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import conversationReducer from './conversationSlice';
+import gameReducer from './gameSlice';
 import messageReducer from './messages/messageSlice';
 import messageContainerReducer from './messageContainerSlice';
 import friendsReducer from './friends/friendsSlice';
@@ -7,7 +7,7 @@ import systemMessageReducer from './system-messages/systemMessagesSlice';
 
 export const store = configureStore({
   reducer: {
-    conversation: conversationReducer,
+    game: gameReducer,
     messages: messageReducer,
     friends: friendsReducer,
     messageContainer: messageContainerReducer,

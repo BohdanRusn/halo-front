@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getConversationById } from '../api';
+import { getGameById } from '../api';
 
-export function useConversationGuard() {
+export function useGameGuard() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
@@ -10,7 +10,7 @@ export function useConversationGuard() {
 
   useEffect(() => {
     setLoading(true);
-    getConversationById(parseInt(id!))
+    getGameById(parseInt(id!))
       .catch((err) => {
         setError(err);
       })

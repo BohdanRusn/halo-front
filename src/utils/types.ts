@@ -23,10 +23,6 @@ export type UserPresence = {
   showOffline: boolean;
 };
 
-export type UserPeer = {
-  id: string;
-};
-
 export type User = {
   id: number;
   username: string;
@@ -35,10 +31,9 @@ export type User = {
   lastName: string;
   profile?: Profile;
   presence?: UserPresence;
-  peer: UserPeer;
 };
 
-export type Conversation = {
+export type Game = {
   id: number;
   creator: User;
   recipient: User;
@@ -46,7 +41,7 @@ export type Conversation = {
   lastMessageSent: MessageType;
 };
 
-export type CreateConversationParams = {
+export type CreateGameParams = {
   username: string;
   message: string;
 };
@@ -56,7 +51,7 @@ export type MessageType = {
   content?: string;
   createdAt: string;
   author: User;
-  conversation: Conversation;
+  game: Game;
 };
 
 export type FetchMessagePayload = {
@@ -66,10 +61,10 @@ export type FetchMessagePayload = {
 
 export type MessageEventPayload = {
   message: MessageType;
-  conversation: Conversation;
+  game: Game;
 };
 
-export type ConversationMessage = {
+export type GameMessage = {
   id: number;
   messages: MessageType[];
 };
@@ -80,7 +75,7 @@ export type DeleteMessageParams = {
 };
 
 export type DeleteMessageResponse = {
-  conversationId: number;
+  gameId: number;
   messageId: number;
 };
 
@@ -126,7 +121,7 @@ export type AcceptFriendRequestResponse = {
 };
 
 export type UserSidebarRouteType =
-  | 'conversations'
+  | 'games'
   | 'friends';
 
 export type UserSidebarItemType = {

@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
-import { ConversationPanel } from '../../components/conversations/ConversationPanel';
-import { ConversationSidebar } from '../../components/sidebars/ConversationSidebar';
+import { GamePanel } from '../../components/games/GamePanel';
+import { GameSidebar } from '../../components/sidebars/GameSidebar';
 import { AppDispatch } from '../../store';
 import {
-  addConversation,
-  fetchConversationsThunk,
-  updateConversation,
-} from '../../store/conversationSlice';
+  addGame,
+  fetchGamesThunk,
+  updateGame,
+} from '../../store/gameSlice';
 import { addMessage, deleteMessage } from '../../store/messages/messageSlice';
 import { SocketContext } from '../../utils/context/SocketContext';
-import { Conversation, MessageEventPayload } from '../../utils/types';
+import { Game, MessageEventPayload } from '../../utils/types';
 
-export const ConversationPage = () => {
+export const GamePage = () => {
   const { id } = useParams();
   const [showSidebar, setShowSidebar] = useState(window.innerWidth > 800);
   const dispatch = useDispatch<AppDispatch>();
@@ -28,17 +28,17 @@ export const ConversationPage = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchConversationsThunk());
+    dispatch(fetchGamesThunk());
   }, []);
 
   useEffect(() => {
     socket.on('onMessage', (payload: MessageEventPayload) => {
-      const { conversation, message } = payload;
+      const { game, message } = payload;
       dispatch(addMessage(payload));
-      dispatch(updateConversation(conversation));
+      dispatch(updateGame(game));
     });
-    socket.on('onConversation', (payload: Conversation) => {
-      dispatch(addConversation(payload));
+    socket.on('onGame', (payload: Game) => {
+      dispatch(addGame(payload));
     });
     socket.on('onMessageDelete', (payload) => {
       dispatch(deleteMessage(payload));
@@ -46,16 +46,16 @@ export const ConversationPage = () => {
     return () => {
       socket.off('connected');
       socket.off('onMessage');
-      socket.off('onConversation');
+      socket.off('onGame');
       socket.off('onMessageDelete');
     };
   }, [id]);
 
   return (
     <>
-      {showSidebar && <ConversationSidebar />}
-      {!id && !showSidebar && <ConversationSidebar />}
-      {!id && showSidebar && <ConversationPanel />}
+      {showSidebar && <GameSidebar />}
+      {!id && !showSidebar && <GameSidebar />}
+      {!id && showSidebar && <GamePanel />}
       <Outlet />
     </>
   );

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../store';
 import { toggleContextMenu } from '../../store/friends/friendsSlice';
 import { removeFriendThunk } from '../../store/friends/friendsThunk';
-import { checkConversationOrCreate } from '../../utils/api';
+import { checkGameOrCreate } from '../../utils/api';
 import { AuthContext } from '../../utils/context/AuthContext';
 import { SocketContext } from '../../utils/context/SocketContext';
 import { ContextMenu, ContextMenuItem } from '../../utils/styles';
@@ -35,9 +35,9 @@ export const FriendContextMenu = () => {
   const sendMessage = () => {
     const recipient = getUserFriendInstance();
     recipient &&
-      checkConversationOrCreate(recipient.id)
+      checkGameOrCreate(recipient.id)
         .then(({ data }) => {
-          navigate(`/conversations/${data.id}`);
+          navigate(`/games/${data.id}`);
         })
         .catch((err) => {
           console.log(err);

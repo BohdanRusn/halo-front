@@ -23,15 +23,3 @@ export function useHandleClick(
     };
   }, deps);
 }
-
-export function useBeforeUnload(
-  callback: (e: BeforeUnloadEvent) => any,
-  deps?: DependencyList | undefined
-) {
-  useEffect(() => {
-    window.addEventListener('beforeunload', callback);
-    return () => {
-      window.removeEventListener('beforeunload', callback);
-    };
-  }, deps);
-}

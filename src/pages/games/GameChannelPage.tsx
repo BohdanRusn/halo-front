@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { MessagePanel } from '../../components/messages/MessagePanel';
 import { SocketContext } from '../../utils/context/SocketContext';
-import { ConversationChannelPageStyle } from '../../utils/styles';
+import { GameChannelPageStyle } from '../../utils/styles';
 import { AppDispatch } from '../../store';
 import { editMessage } from '../../store/messages/messageSlice';
 import { fetchMessagesThunk } from '../../store/messages/messageThunk';
 
-export const ConversationChannelPage = () => {
+export const GameChannelPage = () => {
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const dispatch = useDispatch<AppDispatch>();
@@ -17,13 +17,13 @@ export const ConversationChannelPage = () => {
   const [isRecipientTyping, setIsRecipientTyping] = useState(false);
 
   useEffect(() => {
-    const conversationId = parseInt(id!);
-    dispatch(fetchMessagesThunk(conversationId));
+    const gameId = parseInt(id!);
+    dispatch(fetchMessagesThunk(gameId));
   }, [id]);
 
   useEffect(() => {
-    const conversationId = id!;
-    socket.emit('onConversationJoin', { conversationId });
+    const gameId = id!;
+    socket.emit('onGameJoin', { gameId });
     socket.on('userJoin', () => {
     });
     socket.on('userLeave', () => {
@@ -39,7 +39,7 @@ export const ConversationChannelPage = () => {
     });
 
     return () => {
-      socket.emit('onConversationLeave', { conversationId });
+      socket.emit('onGameLeave', { gameId });
       socket.off('userJoin');
       socket.off('userLeave');
       socket.off('onTypingStart');
@@ -53,22 +53,22 @@ export const ConversationChannelPage = () => {
       clearTimeout(timer);
       setTimer(
         setTimeout(() => {
-          socket.emit('onTypingStop', { conversationId: id });
+          socket.emit('onTypingStop', { gameId: id });
           setIsTyping(false);
         }, 2000)
       );
     } else {
       setIsTyping(true);
-      socket.emit('onTypingStart', { conversationId: id });
+      socket.emit('onTypingStart', { gameId: id });
     }
   };
 
   return (
-    <ConversationChannelPageStyle>
+    <GameChannelPageStyle>
       <MessagePanel
         sendTypingStatus={sendTypingStatus}
         isRecipientTyping={isRecipientTyping}
       ></MessagePanel>
-    </ConversationChannelPageStyle>
+    </GameChannelPageStyle>
   );
 };

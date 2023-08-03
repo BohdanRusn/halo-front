@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useParams} from 'react-router-dom';
 import {AppDispatch, RootState} from '../../store';
 import {MessageType} from '../../utils/types';
-import {selectConversationMessage} from '../../store/messages/messageSlice';
+import {selectGameMessage} from '../../store/messages/messageSlice';
 import {MessageItemHeader} from './MessageItemHeader';
 import {MessageItemContainerBody} from './MessageItemContainerBody';
 import {useHandleClick, useKeydown} from '../../utils/hooks';
@@ -22,8 +22,8 @@ import {SelectedMessageContextMenu} from "../contextMenus/SelectedMessageContext
 export const MessageContainer = () => {
   const { id } = useParams();
   const dispatch = useDispatch<AppDispatch>();
-  const conversationMessages = useSelector((state: RootState) =>
-    selectConversationMessage(state, parseInt(id!))
+  const gameMessages = useSelector((state: RootState) =>
+    selectGameMessage(state, parseInt(id!))
   );
   const { showContextMenu } = useSelector(
     (state: RootState) => state.messageContainer
@@ -77,7 +77,7 @@ export const MessageContainer = () => {
   return (
     <MessageContainerStyle>
       <SystemMessageList />
-      {conversationMessages?.messages.map(mapMessages)}
+      {gameMessages?.messages.map(mapMessages)}
       {showContextMenu && <SelectedMessageContextMenu />}
     </MessageContainerStyle>
   );

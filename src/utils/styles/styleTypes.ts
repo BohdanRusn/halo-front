@@ -17,7 +17,7 @@ export type ContextMenuProps = {
   left: number;
 };
 
-export type ConversationSelectedProps = {
+export type GameSelectedProps = {
   selected: boolean;
 };
 
@@ -33,7 +33,7 @@ export type MessageInputContainerProps = {
   isMultiLine: boolean;
 };
 
-export type ConversationSidebarItemProps = {
+export type GameSidebarItemProps = {
   selected: boolean;
 };
 

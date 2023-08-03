@@ -20,8 +20,8 @@ export const friendsNavbarItems = [
 
 export const userSidebarItems: UserSidebarItemType[] = [
   {
-    id: 'conversations',
-    pathname: '/conversations',
+    id: 'games',
+    pathname: '/games',
   },
   {
     id: 'friends',

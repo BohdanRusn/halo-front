@@ -1,14 +1,14 @@
 import React, { createRef, Dispatch, FC, useEffect } from 'react';
 import { ModalContainer, ModalContentBody, ModalHeader } from '.';
 import { OverlayStyle } from '../../utils/styles';
-import { CreateConversationForm } from '../forms/CreateConversationForm';
+import { CreateGameForm } from '../forms/CreateGameForm';
 import { MdClose } from 'react-icons/md';
 
 type Props = {
   setShowModal: Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CreateConversationModal: FC<Props> = ({ setShowModal }) => {
+export const CreateGameModal: FC<Props> = ({ setShowModal }) => {
   const ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
@@ -31,11 +31,11 @@ export const CreateConversationModal: FC<Props> = ({ setShowModal }) => {
     <OverlayStyle ref={ref} onClick={handleOverlayClick}>
       <ModalContainer>
         <ModalHeader>
-          <h2>Create a Conversation</h2>
+          <h2>Create a Game</h2>
           <MdClose size={32} onClick={() => setShowModal(false)} />
         </ModalHeader>
         <ModalContentBody>
-          <CreateConversationForm setShowModal={setShowModal} />
+          <CreateGameForm setShowModal={setShowModal} />
         </ModalContentBody>
       </ModalContainer>
     </OverlayStyle>

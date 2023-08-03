@@ -3,14 +3,14 @@ import React, { FC, useContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { RootState } from '../../store';
-import { selectConversationById } from '../../store/conversationSlice';
+import { selectGameById } from '../../store/gameSlice';
 import {
   addSystemMessage,
   clearAllMessages,
 } from '../../store/system-messages/systemMessagesSlice';
 import { createMessage } from '../../utils/api';
 import { AuthContext } from '../../utils/context/AuthContext';
-import { getRecipientFromConversation } from '../../utils/helpers';
+import { getRecipientFromGame } from '../../utils/helpers';
 import { useToast } from '../../utils/hooks/useToast';
 import {
   MessagePanelBody,
@@ -21,7 +21,7 @@ import {
 import { MessageContainer } from './MessageContainer';
 import { MessageInputField } from './MessageInputField';
 import MazeGame from "../mazeGame/MazeGame";
-import {MessagePanelConversationHeader} from "./headers/MessagePanelConversationHeader";
+import {MessagePanelGameHeader} from "./headers/MessagePanelGameHeader";
 
 type Props = {
   sendTypingStatus: () => void;
@@ -41,10 +41,10 @@ export const MessagePanel: FC<Props> = ({
   const { id: routeId } = useParams();
   const { user } = useContext(AuthContext);
   const { error } = useToast({ theme: 'dark' });
-  const conversation = useSelector((state: RootState) =>
-    selectConversationById(state, parseInt(routeId!))
+  const game = useSelector((state: RootState) =>
+    selectGameById(state, parseInt(routeId!))
   );
-  const recipient = getRecipientFromConversation(conversation, user);
+  const recipient = getRecipientFromGame(game, user);
 
   useEffect(() => {
     return () => {
@@ -91,7 +91,7 @@ export const MessagePanel: FC<Props> = ({
     <>
       <MessagePanelStyle>
         <MazeGame/>
-        <MessagePanelConversationHeader />
+        <MessagePanelGameHeader />
         <MessagePanelBody>
           <MessageContainer />
         </MessagePanelBody>

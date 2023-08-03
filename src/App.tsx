@@ -2,8 +2,8 @@ import {Dispatch, PropsWithChildren, SetStateAction, useState} from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { AuthenticatedRoute } from './components/AuthenticatedRoute';
-import { ConversationChannelPage } from './pages/conversations/ConversationChannelPage';
-import { ConversationPage } from './pages/conversations/ConversationPage';
+import { GameChannelPage } from './pages/games/GameChannelPage';
+import { GamePage } from './pages/games/GamePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AuthContext } from './utils/context/AuthContext';
@@ -15,7 +15,7 @@ import { enableMapSet } from 'immer';
 import { AppPage } from './pages/AppPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ConversationPageGuard } from './guards/ConversationPageGuard';
+import { GamePageGuard } from './guards/GamePageGuard';
 import { FriendsLayoutPage } from './pages/friends/FriendsLayoutPage';
 import { FriendRequestPage } from './pages/friends/FriendRequestPage';
 
@@ -51,11 +51,11 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route element={<AuthenticatedRoute children={<AppPage />} />}>
-          <Route path="conversations" element={<ConversationPage />}>
+          <Route path="games" element={<GamePage />}>
             <Route
               path=":id"
               element={
-                <ConversationPageGuard children={<ConversationChannelPage />} />
+                <GamePageGuard children={<GameChannelPage />} />
               }
             />
           </Route>

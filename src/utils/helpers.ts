@@ -5,26 +5,26 @@ import {
   Gear,
 } from 'akar-icons';
 import {
-  Conversation,
+  Game,
   FriendRequest,
   FriendRequestDetailsType,
   User,
   UserSidebarRouteType,
 } from './types';
 
-export const getRecipientFromConversation = (
-  conversation?: Conversation,
+export const getRecipientFromGame = (
+  game?: Game,
   user?: User
 ) => {
-  return user?.id === conversation?.creator.id
-    ? conversation?.recipient
-    : conversation?.creator;
+  return user?.id === game?.creator.id
+    ? game?.recipient
+    : game?.creator;
 };
 
 
 export const getUserSidebarIcon = (id: UserSidebarRouteType) => {
   switch (id) {
-    case 'conversations':
+    case 'games':
       return ChatDots;
     case 'friends':
       return Person;

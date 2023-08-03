@@ -4,8 +4,8 @@ import { fadeInUpwards } from './keyframes';
 import {
   CharacterLimitProps,
   ContextMenuProps,
-  ConversationSelectedProps,
-  ConversationSidebarItemProps,
+  GameSelectedProps,
+  GameSidebarItemProps,
   InputContainerProps,
   MessageInputContainerProps,
   MessageItemContentProps,
@@ -100,13 +100,13 @@ export const Page = styled.div<PageProps>`
   overflow: hidden;
 `;
 
-export const ConversationChannelPageStyle = styled.div`
+export const GameChannelPageStyle = styled.div`
   height: 100%;
   width: 100%;
   overflow: hidden;
 `;
 
-export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemProps>`
+export const GameSidebarItemStyle = styled.div<GameSidebarItemProps>`
   display: flex;
   align-items: center;
   gap: 20px;
@@ -114,12 +114,12 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
   box-sizing: border-box;
   width: 100%;
   background-color: ${({ selected, theme }) =>
-    selected && theme.conversationSidebar.conversationItem.selected};
+    selected && theme.gameSidebar.gameItem.selected};
   cursor: pointer;
   transition: 100ms background-color ease;
   &:hover {
     background-color: ${({ theme }) =>
-      theme.conversationSidebar.conversationItem.hover.backgroundColor};
+      theme.gameSidebar.gameItem.hover.backgroundColor};
   }
 
   & .title {
@@ -129,25 +129,25 @@ export const ConversationSidebarItemStyle = styled.div<ConversationSidebarItemPr
     color: ${({ theme }) => theme.text.primary};
   }
 `;
-export const ConversationSidebarItemDetails = styled.div`
+export const GameSidebarItemDetails = styled.div`
   word-break: break-all;
   display: flex;
   flex-direction: column;
   gap: 4px;
   flex: 1;
-  & .conversationName {
+  & .gameName {
     display: block;
     font-weight: 600;
     font-size: 16px;
     color: ${({ theme }) =>
-      theme.conversationSidebar.conversationItem.title.color};
+      theme.gameSidebar.gameItem.title.color};
   }
-  & .conversationLastMessage {
+  & .gameLastMessage {
     font-size: 15px;
     font-weight: 500;
     color: #868686;
     color: ${({ theme }) =>
-      theme.conversationSidebar.conversationItem.title.lastMessageColor};
+      theme.gameSidebar.gameItem.title.lastMessageColor};
   }
 `;
 
@@ -220,6 +220,16 @@ export const MessagePanelStyle = styled.div`
   height: 100%;
   width: 100%;
   background-color: ${({ theme }) => theme.messagePanel.backgroundColor};
+`;
+
+export const GameButtons = styled.div`
+  display: flex;
+  gap: 10px;
+	position: absolute;
+  top: 0;
+  right: 0;
+  padding: 20px;
+  width: 200px;
 `;
 
 export const MessagePanelHeaderStyle = styled.header`
@@ -385,28 +395,6 @@ export const EditMessageActionsContainer = styled.div`
     color: #1d77ff;
   }
 `;
-export const ConversationTabStyle = styled.section`
-  display: flex;
-  gap: 20px;
-  margin: 14px 18px;
-`;
-
-export const ConversationTabItemStyle = styled.section<ConversationSelectedProps>`
-  cursor: pointer;
-  user-select: none;
-  font-size: 12px;
-  font-weight: 500;
-  background-color: #1f1f1f;
-  text-transform: uppercase;
-  padding: 8px 18px;
-  border-radius: 5px;
-  ${({ selected }) =>
-    selected &&
-    css`
-      background-color: #383838;
-    `};
-`;
-
 export const SidebarContainerStyle = styled.div``;
 export const RecipientResultContainerStyle = styled.div`
   position: absolute;
@@ -479,7 +467,7 @@ export const SidebarStyle = styled.div`
   flex-direction: column;
   height: 100%;
   width: 400px;
-  background-color: ${(({ theme }: { theme: Theme }) => theme.conversationSidebar.backgroundColor)({theme: DarkTheme})};
+  background-color: ${(({ theme }: { theme: Theme }) => theme.gameSidebar.backgroundColor)({theme: DarkTheme})};
   flex: 0 0 auto;
   @media (max-width: 800px) {
     width: calc(100% - 80px);
